@@ -114,9 +114,7 @@ window.onload = function(e) {
                 console.log("Database cleared successfully.");
                 gameState.set(false)
                 // from chatGPT
-                while (guesses.firstChild) {
-                  guesses.removeChild(guesses.firstChild);
-              }
+                
 
               }).catch(function(error) {
                 console.error("Error clearing database:", error);
@@ -161,6 +159,11 @@ window.onload = function(e) {
             game.child('gameState').on('value', (snapshot) => {
               this.gameState = snapshot.val()
               console.log("state", this.gameState)
+              if (this.gameState == false){
+                while (guesses.firstChild) {
+                  guesses.removeChild(guesses.firstChild);
+                }
+              }
             })
             
             game.child('players').on('value', (snapshot) => {
