@@ -13,7 +13,8 @@ window.onload = function(e) {
         appId: "1:764802389077:web:c25defbea7324f869db0dc",
         measurementId: "G-13M3MY56RD"
       };
-
+      
+      // init our firebase application
       try {
         firebase.initializeApp(firebaseConfig);
         console.log("Firebase initialized")
@@ -23,26 +24,39 @@ window.onload = function(e) {
 
       // database
       const db = firebase.database()
-
+      
       // creating our new Vue app
-
       new Vue({
-        template: '<div id = "app"> <div>STARTER PAGE</div> </div>',
+        template: `<div id = "app"> 
+          <div>STARTER PAGE</div> 
+          <button @click="joinGame" v-id="!joined">join</button>
+          </div>`,
         computed: {
-
+            joined() {
+              return this.userKey
+            }
         },
 
         methods: {
             // game methods
-    
+            // join game method
+            joinGame() {
+              const userRef = this.pla
+            }
         },
 
-        data() {
+        
 
+        data() {
+          return {
+            userKey: undefined,
+            players: {},
+            gameState: 'notStarted'
+          }
         },
 
         mounted() {
-
+          let myGameRef = db.ref()
         },
         el: "#app",
       })
