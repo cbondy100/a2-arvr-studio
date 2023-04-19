@@ -213,14 +213,14 @@ window.onload = function(e) {
                     join.hidden = true;
                     var start = document.getElementById("start");
                     start.hidden = true;
-                    count = 0
-                    newPlayerRef.update({
-                      word: ""
-                    })
-                    word_list = []
-                    word = null
-                    console.log(word_list)
                   }
+                  count = 0
+                  newPlayerRef.update({
+                    word: ""
+                  })
+                  word_list = []
+                  word = null
+                  console.log("WORDLIST CLEAR:", word_list)
                 }
                 
               });
