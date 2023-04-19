@@ -43,12 +43,16 @@ window.onload = function(e) {
       new Vue({
         template: `<div id = "app"> 
         
-          <p> Player</p>
+          <h3> GUESSING GAME </h3>
+          <p>You and a partner must guess the <strong>same word</strong> using only previous guesses as clues for what each other is thinking.</p>
+          <p>Start with a random word and try to win the game in as few guesses as possible!</p>
+          <p> Choose a player name:</p>
           <input v-model="newPlayerRef.name" />
-          <button @click="joinGame" :disabled="!canEnterName">Join Game</button>
-          <button @click="startGame" :disabled="canStartGame">Start Game</button>
+          <button id="join" @click="joinGame" :disabled="!canEnterName">Join Game</button>
+          <button id="start" @click="startGame" :disabled="canStartGame">Start Game</button>
           <button @click="resetGame">RESET GAME</button>
-          <div hidden={}
+          <div id="start_div"">
+          </div>
           <div v-show="gameState">
             <p> LETS PLAY A GAME <p> 
             <input v-model="newPlayerRef.word" />
@@ -89,6 +93,9 @@ window.onload = function(e) {
 
               if(newPlayerRef.name != "") {
                 console.log("Player joined game")
+                start_message = document.createElement("div");
+                start_message.innerText = "You successfully joined the game as '" + newPlayerRef.name + "'. Once your partner joins, press 'Start Game'";
+                start_div.appendChild(start_message);
               
                 newPlayerRef.set({
                   id: newPlayerRef.key,
@@ -125,6 +132,9 @@ window.onload = function(e) {
               this.newPlayerRef.update({
                 word: newPlayerRef.word
               })
+              guess = document.createElement("div");
+              guess.innerText = "Your guess is " + newPlayerRef.word;
+              guesses.appendChild(guess);
             }
         },
 
@@ -151,6 +161,7 @@ window.onload = function(e) {
         mounted() {
 
           const guesses = document.getElementById("guesses");
+          const start_div = document.getElementById("start_div")
 
         },
 
@@ -163,7 +174,17 @@ window.onload = function(e) {
                 while (guesses.firstChild) {
                   guesses.removeChild(guesses.firstChild);
                 }
-              }
+              } else {
+                while (start_div.firstChild) {
+                  start_div.removeChild(start_div.firstChild);
+                }
+              }                    
+              
+              var join = document.getElementById("join");
+              join.hidden = false;
+              var start = document.getElementById("start");
+              start.hidden = false;
+
             })
             
             game.child('players').on('value', (snapshot) => {
@@ -181,14 +202,24 @@ window.onload = function(e) {
 
                 if(count == 2) {
                   guess = document.createElement("div");
-                  guess.innerText = "You guys guessed " + word_list[0] + " and " + word_list[1] + "!";
+                  guess.innerText = "You and your partner guessed " + word_list[0] + " and " + word_list[1] + "!";
                   guesses.appendChild(guess);
-                  count = 0
-                  newPlayerRef.update({
-                    word: ""
-                  })
-                  word_list = []
-                  word = null
+                  if(word_list[0] == word_list[1]) {
+                    console.log("WIN")
+                    guess = document.createElement("div");
+                    guess.innerText = "You and your partner matched guesses! You WIN!!!!!!";
+                    guesses.appendChild(guess);
+                    var join = document.getElementById("join");
+                    join.hidden = true;
+                    var start = document.getElementById("start");
+                    start.hidden = true;
+                    count = 0
+                    newPlayerRef.update({
+                      word: ""
+                    })
+                    word_list = []
+                    word = null
+                  }
                 }
                 
               });
