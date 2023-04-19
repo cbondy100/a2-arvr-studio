@@ -219,6 +219,7 @@ window.onload = function(e) {
                     })
                     word_list = []
                     word = null
+                    console.log(word_list)
                   }
                 }
                 
